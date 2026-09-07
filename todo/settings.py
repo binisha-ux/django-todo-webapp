@@ -56,12 +56,14 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+import os
+
 # Social Account Configuration
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '445728869887-jg7djr4phvrtmmsf0krj9lia8qgcs03r.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.getenv('GOOGLE_CLIENT_ID'),
+            'secret': os.getenv('GOOGLE_CLIENT_SECRET'),
             'key': ''
         },
         'SCOPE': [
@@ -73,6 +75,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+
 
 # Redirects and UX preferences
 LOGIN_REDIRECT_URL = '/'
