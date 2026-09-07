@@ -38,7 +38,46 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'todo_app',
+    'django.contrib.sites',  # Required by allauth
+
+    # Allauth apps
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
+# Required for allauth to match the database Site record
+SITE_ID = 1
+
+# Authentication Backends required by django-allauth
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# Social Account Configuration
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '445728869887-jg7djr4phvrtmmsf0krj9lia8qgcs03r.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+# Redirects and UX preferences
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+SOCIALACCOUNT_LOGIN_ON_GET = True  # Bypasses the intermediate confirmation page
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -48,6 +87,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'todo.urls'
@@ -126,3 +167,7 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# Tell allauth to use your custom registration template
+ACCOUNT_SIGNUP_TEMPLATE = 'account/signup.html'            # Regular registration page
+SOCIALACCOUNT_SIGNUP_TEMPLATE = 'socialaccount/signup.html' # Google sign-up confirmation page
