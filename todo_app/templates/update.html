@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Task</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-section {
+            width: 100%;
+            max-width: 500px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .form-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        textarea.form-control {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-save {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-save:hover {
+            background-color: #218838;
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-section">
+        <h3>Update Task</h3>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Task Title -->
+            <div class="form-group">
+                <input type="text" name="title" class="form-control" value="{{ task.title }}" placeholder="Task title" required>
+            </div>
+
+            <!-- Task Description -->
+            <div class="form-group">
+                <textarea name="description" class="form-control" placeholder="Task description...">{{ task.description }}</textarea>
+            </div>
+
+            <!-- Date & Priority Row -->
+            <div class="row">
+                <input type="date" name="due_date" class="form-control" value="{{ formatted_date }}" style="flex: 1;" required>
+                
+                <select name="priority" class="form-control" style="flex: 1;">
+                    <option value="Low" {% if task.priority == "Low" %}selected{% endif %}>Low</option>
+                    <option value="Medium" {% if task.priority == "Medium" %}selected{% endif %}>Medium</option>
+                    <option value="High" {% if task.priority == "High" %}selected{% endif %}>High</option>
+                </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="btn-container">
+                <button type="submit" class="btn-save">Save Changes</button>
+                <a href="{% url 'dashboard' %}" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
